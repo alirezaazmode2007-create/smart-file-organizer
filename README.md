@@ -16,15 +16,25 @@ A powerful, cross-platform Python tool to automatically organize files in a dire
 
 ### From Source
 ```bash
-git clone https://github.com/yourusername/smart-file-organizer.git
+git clone https://github.com/alirezaazmode2007-create/smart-file-organizer.git
 cd smart-file-organizer
 pip install -e .
 ```
 
+### Via pip (after publishing to PyPI)
+```bash
+pip install smart-file-organizer
+```
+
 ### Using Docker
 ```bash
+# Build locally
 docker build -t smart-file-organizer .
 docker run -v /path/to/your/files:/data smart-file-organizer /data
+
+# Or pull from GitHub Container Registry (after publishing)
+docker pull ghcr.io/alirezaazmode2007-create/smart-file-organizer:latest
+docker run -v /path/to/your/files:/data ghcr.io/alirezaazmode2007-create/smart-file-organizer:latest /data
 ```
 
 ### Development Install
