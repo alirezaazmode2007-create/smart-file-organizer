@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  smart-file-organizer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smart-file-organizer:latest
+    container_name: smart-file-organizer
+    volumes:
+      # Mount your files directory to organize
+      - ./test_data:/data:rw
+      # Mount config for customization
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Run with a specific directory
+    # command: /data
+    # Or run interactively
+    stdin_open: true
+    tty: true
+
+  # Development service with live reload
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    image: smart-file-organizer:dev
+    container_name: smart-file-organizer-dev
+    volumes:
+      - .:/app:rw
+      - ./test_data:/data:rw
+    working_dir: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    command: python -m smart_file_organizer /data
+    stdin_open: true
+    tty: true
+
+  # Test runner
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    image: smart-file-organizer:test
+    container_name: smart-file-organizer-test
+    volumes:
+      - .:/app:rw
+    working_dir: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: pytest tests/ -v --cov=smart_file_organizer --cov-report=term-missing
